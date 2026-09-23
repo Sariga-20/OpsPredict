@@ -31,9 +31,15 @@ MLflow Experiment Tracking
        ↓
 FastAPI REST API
        ↓
+Application Logging
+       ↓
+Basic ML Monitoring
+       ↓
 Docker Container
        ↓
 GitHub Actions CI
+       ↓
+Render Cloud Deployment
 ```
 ---
 
@@ -161,6 +167,7 @@ The trained XGBoost model is exposed through a FastAPI REST API.
 |---|---|---|
 | GET | `/` | Check whether the API is running |
 | POST | `/predict` | Predict late-delivery risk |
+| GET | `/monitoring` | View basic prediction monitoring metrics |
 
 The `/predict` endpoint accepts the model's 15 required features and returns:
 
@@ -169,11 +176,56 @@ The `/predict` endpoint accepts the model's 15 required features and returns:
 - Late-delivery probability
 - Decision threshold
 
+The `/monitoring` endpoint provides basic application-level ML monitoring metrics, including:
+
+- Total predictions
+- Number of predictions classified as late
+- Late prediction percentage
+- Average predicted late-delivery probability
+- Decision threshold
+
+The API also includes application logging for prediction requests and results.
+
 Interactive API documentation is available through FastAPI Swagger UI at:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
+---
+
+## 📊 Application & ML Monitoring
+
+OpsPredict includes basic application-level monitoring for prediction activity.
+
+The monitoring endpoint tracks:
+
+- Total prediction requests
+- Number of predictions classified as late
+- Late prediction percentage
+- Average predicted late-delivery probability
+- Decision threshold
+
+Monitoring endpoint:
+
+```text
+GET /monitoring
+```
+Example response:
+
+```json
+{
+  "total_predictions": 10,
+  "late_predictions": 2,
+  "late_prediction_percentage": 20.0,
+  "average_late_probability": 0.2845,
+  "decision_threshold": 0.7
+}
+```
+The application also uses Python logging to record API requests and prediction results.
+
+Note: The current monitoring metrics are stored in application memory and reset when the service restarts. This implementation is intended as a basic monitoring layer for the project and can be extended with persistent metrics storage and production monitoring tools.
+
+---
 
 ## 🐳 Docker
 
@@ -334,9 +386,9 @@ OpsPredict/
 
 Potential future improvements for OpsPredict include:
 
-- Deploy the FastAPI service to a cloud platform
-- Add automated model retraining
-- Implement production monitoring and data-drift detection
+- Implement persistent production monitoring
+- Add automated data-drift detection
+- Implement automated model retraining
 - Improve late-delivery prediction using additional temporal and operational features
 - Add a Streamlit interface for interactive predictions
 - Integrate real-time order data
