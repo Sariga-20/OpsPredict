@@ -1,4 +1,5 @@
 from fastapi.testclient import TestClient
+
 from app.main import app
 
 
@@ -31,7 +32,10 @@ def test_predict():
         "total_product_volume_cm3": 25000.0
     }
 
-    response = client.post("/predict", json=payload)
+    response = client.post(
+        "/predict",
+        json=payload
+    )
 
     assert response.status_code == 200
 
@@ -44,3 +48,23 @@ def test_predict():
 
     assert result["prediction"] in [0, 1]
     assert 0 <= result["late_delivery_probability"] <= 1
+
+
+def test_monitoring():
+    response = client.get("/monitoring")
+
+    assert response.status_code == 200
+
+    result = response.json()
+
+    assert "total_predictions" in result
+    assert "late_predictions" in result
+    assert "late_prediction_percentage" in result
+    assert "average_late_probability" in result
+    assert "decision_threshold" in result
+
+    assert result["total_predictions"] >= 0
+    assert result["late_predictions"] >= 0
+    assert 0 <= result["late_prediction_percentage"] <= 100
+    assert 0 <= result["average_late_probability"] <= 1
+    assert 0 <= result["decision_threshold"] <= 1
