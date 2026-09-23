@@ -1,0 +1,21 @@
+{
+    "model_type": "XGBoost",
+    "features": [
+        "same_state",
+        "purchase_year",
+        "purchase_month",
+        "seller_previous_late_rate",
+        "unique_sellers",
+        "estimated_delivery_days",
+        "total_items",
+        "total_freight",
+        "purchase_day",
+        "seller_previous_late",
+        "average_product_volume_cm3",
+        "average_product_weight_g",
+        "seller_previous_orders",
+        "average_item_price",
+        "total_product_volume_cm3"
+    ],
+    "threshold": 0.7
+}
