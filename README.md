@@ -202,6 +202,26 @@ http://127.0.0.1:8000/docs
 ```
 ---
 
+## ☁️ Live Deployment
+
+OpsPredict is deployed as a Dockerized FastAPI service on Render.
+
+### Public API
+
+[Open OpsPredict API](https://opspredict.onrender.com)
+
+### Swagger API Documentation
+
+[Open Swagger Documentation](https://opspredict.onrender.com/docs)
+
+The deployed API provides:
+
+- API health check
+- `/predict` endpoint
+- Late-delivery probability prediction
+- Risk classification based on the selected threshold
+---
+
 ## 🧪 Testing & CI
 
 Pytest is used to test the FastAPI application.
